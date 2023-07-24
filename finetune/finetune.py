@@ -42,7 +42,7 @@ class LoadBestPeftModelCallback(TrainerCallback):
     ):
         
         print(f"Loading best peft model from {state.best_model_checkpoint} (score: {state.best_metric}).")
-        #best_model_path = os.path.join(state.best_model_checkpoint, "adapter_model.bin")
+      
 
         if state.best_model_checkpoint is None:
             print(f"Setting best_model_checkpoint to {checkpoint_folder}")
@@ -50,6 +50,8 @@ class LoadBestPeftModelCallback(TrainerCallback):
         elif state.best_model_checkpoint.endswith(checkpoint_folder):
             print(f"Updating best_model_checkpoint to {checkpoint_folder}")
             state.best_model_checkpoint = checkpoint_folder
+            
+        best_model_path = os.path.join(state.best_model_checkpoint, "adapter_model.bin")
         
         adapters_weights = torch.load(best_model_path)
         model = kwargs["model"]
