@@ -24,7 +24,13 @@ class SavePeftModelCallback(TrainerCallback):
         **kwargs,
     ):
         checkpoint_folder = os.path.join(args.output_dir, f"{PREFIX_CHECKPOINT_DIR}-{state.global_step}")
-
+        if state.best_model_checkpoint is None:
+            print(f"Setting best_model_checkpoint to {checkpoint_folder}")
+            state.best_model_checkpoint = checkpoint_folder
+        elif state.best_model_checkpoint.endswith(checkpoint_folder):
+            print(f"Updating best_model_checkpoint to {checkpoint_folder}")
+            state.best_model_checkpoint = checkpoint_folder
+        
         kwargs["model"].save_pretrained(checkpoint_folder)
 
         pytorch_model_path = os.path.join(checkpoint_folder, "pytorch_model.bin")
@@ -42,14 +48,6 @@ class LoadBestPeftModelCallback(TrainerCallback):
     ):
         
         print(f"Loading best peft model from {state.best_model_checkpoint} (score: {state.best_metric}).")
-      
-
-        if state.best_model_checkpoint is None:
-            print(f"Setting best_model_checkpoint to {checkpoint_folder}")
-            state.best_model_checkpoint = checkpoint_folder
-        elif state.best_model_checkpoint.endswith(checkpoint_folder):
-            print(f"Updating best_model_checkpoint to {checkpoint_folder}")
-            state.best_model_checkpoint = checkpoint_folder
             
         best_model_path = os.path.join(state.best_model_checkpoint, "adapter_model.bin")
         
