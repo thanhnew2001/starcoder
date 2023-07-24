@@ -24,6 +24,9 @@ class SavePeftModelCallback(TrainerCallback):
         **kwargs,
     ):
         checkpoint_folder = os.path.join(args.output_dir, f"{PREFIX_CHECKPOINT_DIR}-{state.global_step}")
+
+        print("checkpoint_folder="+checkpoint_folder)
+        
         if state.best_model_checkpoint is None:
             print(f"Setting best_model_checkpoint to {checkpoint_folder}")
             state.best_model_checkpoint = checkpoint_folder
