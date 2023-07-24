@@ -52,8 +52,8 @@ class LoadBestPeftModelCallback(TrainerCallback):
         
         print(f"Loading best peft model from {state.best_model_checkpoint} (score: {state.best_metric}).")
             
-        #best_model_path = os.path.join(state.best_model_checkpoint, "adapter_model.bin")
-        best_model_path = os.path.join("checkpoints/checkpoint-1", "adapter_model.bin")
+        best_model_path = os.path.join(state.best_model_checkpoint, "adapter_model.bin")
+        #best_model_path = os.path.join("checkpoints/checkpoint-1", "adapter_model.bin")
         
         adapters_weights = torch.load(best_model_path)
         model = kwargs["model"]
@@ -75,7 +75,7 @@ def get_args():
     parser.add_argument("--output_column_name", type=str, default="completion")
 
     parser.add_argument("--seq_length", type=int, default=2048)
-    parser.add_argument("--max_steps", type=int, default=10000)
+    parser.add_argument("--max_steps", type=int, default=10)
     parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--gradient_accumulation_steps", type=int, default=16)
     parser.add_argument("--eos_token_id", type=int, default=49152)
